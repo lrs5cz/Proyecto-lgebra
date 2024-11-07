@@ -372,7 +372,7 @@ def Matrices():
             #Algoritmo de matriz inversa
                 print("Matriz inversa")
             elif selection == 5:
-               print("Menu") 
+               print("Menu")
             else:
                 print("Opción no válida. Por favor, intenta de nuevo.\n")
         except ValueError:
