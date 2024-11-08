@@ -243,10 +243,42 @@ def GaussJordan():
                         #Revisando si el resultado es = 0
                         if(matriz_jordan[i][i+1] == 0):
                             print("El sistema de ecuaciones es compatible indeterminado")
-                            GaussJordan()
+                            while True:
+                                try:
+                                    print("¿Qué desea hacer?\n")
+                                    print("1. Regresar al menú principal.\n")
+                                    print("2. Continuar resolviendo otro sistema.\n")
+                                    print("3. Terminar ejecución.\n")
+                                    selection = int(input("Ingrese el número de la opción deseada: "))
+                                    if selection == 1:
+                                        Proyecto()
+                                    elif selection == 2:
+                                        GaussJordan()
+                                    elif selection == 3:
+                                        sys.exit("Ejecución finalizada")
+                                    else:
+                                        print("Opción no válida. Inténtalo de nuevo.")
+                                except ValueError:
+                                    print("Por favor, ingresa un número válido.\n")
                         else:
                             print("El sistema de ecuaciones es incompatible! pruebe de nuevo!")
-                            GaussJordan()
+                            while True:
+                                try:
+                                    print("¿Qué desea hacer?\n")
+                                    print("1. Regresar al menú principal.\n")
+                                    print("2. Continuar resolviendo otro sistema.\n")
+                                    print("3. Terminar ejecución.\n")
+                                    selection = int(input("Ingrese el número de la opción deseada: "))
+                                    if selection == 1:
+                                        Proyecto()
+                                    elif selection == 2:
+                                        GaussJordan()
+                                    elif selection == 3:
+                                        sys.exit("Ejecución finalizada")
+                                    else:
+                                        print("Opción no válida. Inténtalo de nuevo.")
+                                except ValueError:
+                                    print("Por favor, ingresa un número válido.\n")
                     matriz_jordan[i][j] /= elemento_diagonal                
                     print(f"Multiplicar fila {i + 1} por {1 / elemento_diagonal} para hacer que el elemento de la diagonal sea 1")
                 for fila in matriz_jordan:
@@ -272,11 +304,6 @@ def GaussJordan():
                     for fila in matriz_jordan:
                         print(fila)
                     print("\n")
-                for fila in matriz_jordan:
-                # Si todos los coeficientes son 0 y el resultado no es 0, es una ecuación inconsistente
-                    if all(coef == 0 for coef in fila[:-1]) and fila[-1] == 0:
-                        print("El sistema es compatible indeterminado, tiene soluciones infinitas!")
-                        GaussJordan  # Finaliza la ejecución sin resolver el sistema
         
             # IMPRIMIENDO VALORES DE LAS VARIABLES QUE SATISFACEN EL SISTEMA DE ECUACIONES
             print("Valores finales: ")
