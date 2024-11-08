@@ -211,6 +211,7 @@ def GaussJordan():
                             valor = float(input(f"Coeficiente de {variables[j]}: "))
                         else:
                             valor = float(input("Resultado:"))
+                                
                         fila.append(valor)
                     matriz_jordan.append(fila)
             except ValueError:
@@ -231,8 +232,6 @@ def GaussJordan():
                                     print(fila)
                                 print()
                                 break
-                            else:
-                                print("El sistema no tiene solución única.")
                 except ValueError:
                     print("Ingresa un número válido")
         
@@ -240,11 +239,17 @@ def GaussJordan():
                 elemento_diagonal = matriz_jordan[i][i]
                 for j in range(n + 1):
                     if elemento_diagonal == 0:
-                        print("El sistema de ecuaciones es incompatible! pruebe de nuevo!")
-                        GaussJordan()
+                        #Revisando si el resultado es = 0
+                        if(matriz_jordan[i][i+1] == 0):
+                            print("El sistema de ecuaciones es compatible indeterminado")
+                            GaussJordan()
+                        else:
+                            print("El sistema de ecuaciones es incompatible! pruebe de nuevo!")
+                            GaussJordan()
                     matriz_jordan[i][j] /= elemento_diagonal                
                     print(f"Multiplicar fila {i + 1} por {1 / elemento_diagonal} para hacer que el elemento de la diagonal sea 1")
                 for fila in matriz_jordan:
+                    print(fila)
         
                 # VOLVIENDO 0 LO QUE ESTA DEBAJO DE LA DIAGONAL
                 for k in range(i + 1, n):
@@ -266,6 +271,11 @@ def GaussJordan():
                     for fila in matriz_jordan:
                         print(fila)
                     print("\n")
+                for fila in matriz_jordan:
+                # Si todos los coeficientes son 0 y el resultado no es 0, es una ecuación inconsistente
+                    if all(coef == 0 for coef in fila[:-1]) and fila[-1] == 0:
+                        print("El sistema es compatible indeterminado, tiene soluciones infinitas!")
+                        GaussJordan  # Finaliza la ejecución sin resolver el sistema
         
             # IMPRIMIENDO VALORES DE LAS VARIABLES QUE SATISFACEN EL SISTEMA DE ECUACIONES
             print("Valores finales: ")
