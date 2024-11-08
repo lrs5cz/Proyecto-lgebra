@@ -1,6 +1,7 @@
 #Hecho por: Ávila Villaseñor Andrick, Chavarría Ramírez Carlos Alexis y Santos Cruz Lair Abraham
 
 import cmath as cmt
+import numpy as np
 import sys
 
 print("Proyecto realizado por:\n")
@@ -316,11 +317,8 @@ def Matrices():
             selection = int(input("Seleccione la operación que desea realizar: "))
 
             if selection in [1, 2, 3]:
-            #Algoritmo para solicitar matrices
-                matriz_A = []
-                matriz_B = []
                 while True:
-                    #Obtener número de columnas y filas de la matriz A
+                    # Solicitar dimensiones de las matrices A y B
                     try:
                         columnas_A = int(input("Introduce el número de columnas de tu matriz A: "))
                         if columnas_A <= 0:
@@ -330,16 +328,7 @@ def Matrices():
                         if filas_A <= 0:
                             print("El número de filas debe ser un número entero positivo. Inténtalo de nuevo.\n")
                             continue
-                    except ValueError:
-                        print("Por favor, ingresa un número válido.\n")
-                    for i in range(filas_A):
-                        fila_A = input(f"Ingrese los elementos de la fila {i+1} de la matriz A (separados por espacios): ")
-                        matriz_A.append([float(x) for x in fila_A.split()])
-                    print("La matriz ingresada es:")
-                    for fila_A in matriz_A:
-                        print("Matriz A: ", fila_A)           
-                        #Obtener número de columnas y filas de la matriz B
-                    try:
+
                         columnas_B = int(input("Introduce el número de columnas de tu matriz B: "))
                         if columnas_B <= 0:
                             print("El número de columnas debe ser un número entero positivo. Inténtalo de nuevo.\n")
@@ -348,50 +337,75 @@ def Matrices():
                         if filas_B <= 0:
                             print("El número de filas debe ser un número entero positivo. Inténtalo de nuevo.\n")
                             continue
+                        break
                     except ValueError:
                         print("Por favor, ingresa un número válido.\n")
 
-                    for i in range(filas_B):
-                        fila_B = input(f"Ingrese los elementos de la fila {i+1} de la matriz B (separados por espacios): ")
-                        matriz_B.append([float(x) for x in fila_B.split()])
-                    print("La matriz ingresada es:")
-                    for fila_B in matriz_B:
-                        print("Matriz B: ", fila_B)
-                    break
+                # Crear matrices A y B e inicializar en 0, añadir complejos
+                matriz_A = np.zeros((filas_A, columnas_A), dtype=complex)
+                matriz_B = np.zeros((filas_B, columnas_B), dtype=complex)
+
+                # Ingresar elementos para la matriz A
+                print("Ingresa los elementos de la matriz A: \n")
+                for i in range(filas_A):
+                    for j in range(columnas_A):
+                        while True:
+                            try:
+                                elemento = input(f"Elemento A {i+1},{j+1}: ")
+                                matriz_A[i, j] = complex(elemento) #Convertir el formato del elemento a número complejo
+                                break 
+                            except ValueError:
+                                print("Por favor, ingresa un número válido.")
+
+                # Imprimir la matriz A
+                print("La matriz A ingresada es:")
+                print(matriz_A)
+
+                # Ingresar elementos para la matriz B
+                print("Ingresa los elementos de la matriz B: \n")
+                for i in range(filas_B):
+                    for j in range(columnas_B):
+                        while True:
+                            try:
+                                elemento = input(f"Elemento B {i+1},{j+1}: ")
+                                matriz_B[i, j] = complex(elemento)
+                                break
+                            except ValueError:
+                                print("Por favor, ingresa un número válido.")
+
+                # Imprimir la matriz B
+                print("La matriz B ingresada es:")
+                print(matriz_B)
+
+            #Algoritmo de adición de matrices
             if selection == 1:
-                #Algoritmo de adición de matrices
-                if filas_A != filas_B or columnas_A != columnas_B:
+                if matriz_A.shape != matriz_B.shape:
                     print("Las dimensiones de las matrices no son iguales, por lo cual no se puede realizar la operación.")
-                #Sumar los elementos de A y B y almacenar en resultado
+                #Sumar los elementos de A y B e imprimir los pasos, almacenar el resultado
                 else:
-                    resultado = [[0 for j in range(columnas_A)] for i in range(filas_A)]
-                    for i in range(filas_A):  
-                        for j in range(columnas_A):  
-                            resultado[i][j] = matriz_A[i][j] + matriz_B[i][j]
-                            #Imprimimos los pasos intermedios
-                            print(f"Sumamos {matriz_A[i][j]} mas {matriz_B[i][j]}: {resultado[i][j]}")
-                            print(f"Resultado parcial: {resultado[i][j]}\n")
-                #Imprimir resultado
-                    print("La matriz resultado de la adición es:")
-                    for fila in resultado:
-                        print(fila)
+                    matriz_C = matriz_A + matriz_B
+                    for i in range(matriz_A.shape[0]):
+                        for j in range(matriz_A.shape[1]):
+                            print(f"Sumamos {matriz_A[i, j]} más {matriz_B[i, j]}: {matriz_C[i, j]}")
+                            print(f"Resultado parcial: {matriz_C[i, j]}\n")
+                        
+                        print("La matriz resultante es:")
+                        print(matriz_C)
+                        
+            #Algoritmo de sustracción de matrices
             elif selection == 2:
-                #Algoritmo de sustracción de matrices
-                if filas_A != filas_B or columnas_A != columnas_B:
+                if matriz_A.shape != matriz_B.shape:
                     print("Las dimensiones de las matrices no son iguales, por lo cual no se puede realizar la operación.")
-                #Sumar los elementos de A y B y almacenar en resultado
+                #Restar los elementos de A y B e imprimir los pasos, almacenar el resultado
                 else:
-                    resultado = [[0 for j in range(columnas_A)] for i in range(filas_A)]
-                    for i in range(filas_A):  
-                        for j in range(columnas_A):  
-                            resultado[i][j] = matriz_A[i][j] - matriz_B[i][j]
-                            #Imprimimos los pasos intermedios
-                            print(f"Sumamos {matriz_A[i][j]} menos {matriz_B[i][j]}: {resultado[i][j]}")
-                            print(f"Resultado parcial: {resultado[i][j]}\n")
-                #Imprimir resultado
-                    print("La matriz resultado de la sustracción es:")
-                    for fila in resultado:
-                        print(fila)
+                    matriz_C = matriz_A - matriz_B
+                    for i in range(matriz_A.shape[0]):
+                        for j in range(matriz_A.shape[1]):
+                            print(f"Restamos {matriz_A[i, j]} menos {matriz_B[i, j]}: {matriz_C[i, j]}")
+                            print(f"Resultado parcial: {matriz_C[i, j]}\n")
+
+                        print("La matriz resultante es:")
+                        print(matriz_C)
             elif selection == 3:
                 #Algoritmo de multiplicación de matrices
                 matriz_c = [[0 for _ in range(columnas_B)] for _ in range(filas_A)]
