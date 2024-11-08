@@ -239,11 +239,12 @@ def GaussJordan():
                 #REALIZANDO QUE EL ELEMENTO DE LA DIAGONAL SEA 1
                 elemento_diagonal = matriz_jordan[i][i]
                 for j in range(n + 1):
+                    if elemento_diagonal == 0:
+                        print("El sistema de ecuaciones es incompatible! pruebe de nuevo!")
+                        GaussJordan()
                     matriz_jordan[i][j] /= elemento_diagonal                
                     print(f"Multiplicar fila {i + 1} por {1 / elemento_diagonal} para hacer que el elemento de la diagonal sea 1")
                 for fila in matriz_jordan:
-                    print(fila)
-                print()
         
                 # VOLVIENDO 0 LO QUE ESTA DEBAJO DE LA DIAGONAL
                 for k in range(i + 1, n):
