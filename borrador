@@ -36,7 +36,7 @@ def Proyecto():
         except ValueError:
             print("Por favor, ingresa un número válido.\n")
 
-#Algoritmo para raíces del polinomio
+# Algoritmo para raíces del polinomio
 def RaizPolinomios():
     while True:
         print("Has elegido la opción: Evaluador de posibles raíces de un polinomio")
@@ -54,9 +54,10 @@ def RaizPolinomios():
             except ValueError:
                 print("Por favor, ingresa un número válido.\n")
                 continue
+
         # Coeficientes del polinomio al usuario    
         coeficientes = []
-        print(f"Introduce los coeficientes del polinomio de grado {grado} (desde el término de mayor grado hasta el término independiente):")
+        print(f"Introduce los coeficientes del polinomio de grado {grado}:")
         for a in range(grado, -1, -1):
             while True:
                 try:
@@ -74,90 +75,96 @@ def RaizPolinomios():
                     print("Por favor, ingresa un número válido.")
 
         # Mostrar el polinomio ingresado
-        polinomio = " + ".join(f"{coef}*x^{a}" for a, coef in zip(range(grado, -1, -1), coeficientes))
-        print(f"\nEl polinomio es: {polinomio.replace('x^0', '').replace('*x^1', 'x').replace('x^', 'x^').strip(' +')}\n")
+        def mostrar_polinomio(coeficientes, grado):
+            polinomio = " + ".join(f"{coef}*x^{a}" for a, coef in zip(range(grado, -1, -1), coeficientes))
+            return polinomio.replace('x^0', '').replace('*x^1', 'x').replace('x^', 'x^').strip(' +')
 
-        # Proceso para evaluar raíces
+        print(f"\nEl polinomio es: {mostrar_polinomio(coeficientes, grado)}\n")
+
         while True:
-            try:
-                factor = int(input("¿Tu factor 'r' pertenece a los números complejos?: [1. Sí, 2. No]: "))
-                if factor == 1:
-                    r = complex(input("Introduce el valor de r (para dividir entre (x - r)): "))
-                    break
-                elif factor == 2:
-                    r = float(input("Introduce el valor de r (para dividir entre (x - r)): "))
-                    break
-                else:
-                    print("Opción no válida, por favor, ingresa una opcion válida.")
+            # Proceso para evaluar raíces
+            while True:
+                try:
+                    factor = int(input("¿Tu factor 'r' pertenece a los números complejos?: [1. Sí, 2. No]: "))
+                    if factor == 1:
+                        r = complex(input("Introduce el valor de r (para dividir entre (x - r)): "))
+                        break
+                    elif factor == 2:
+                        r = float(input("Introduce el valor de r (para dividir entre (x - r)): "))
+                        break
+                    else:
+                        print("Opción no válida, por favor, ingresa una opción válida.")
+                        continue
+                except ValueError:
+                    print("Por favor, ingresa un número válido.")
                     continue
-            except ValueError:
-                print("Por favor, ingresa un número válido.")
-                continue
-        print("\n")
-        # Inicializamos la división sintética
-        n = len(coeficientes)
-    
-        # Almacenamos los datos
-        resultado = [0] * n  
+            print("\n")
 
-        # Bajamos el primer coeficiente directamente
-        resultado[0] = coeficientes[0]
-        print(f"\nBajamos el primer coeficiente: {resultado[0]}\n")
-    
-        # Iteramos sobre los coeficientes para hacer la división sintética
-        for a in range(1, n):
-            multiplicacion = resultado[a - 1] * r
-            resultado[a] = coeficientes[a] + multiplicacion
-    
-            # Imprimir los pasos intermedios
-            print(f"Paso {a}:")
-            print(f"Multiplicamos {resultado[a - 1]} por {r}: {multiplicacion}")
-            print(f"Sumamos {coeficientes[a]}: {resultado[a]}")
-            print(f"Resultado parcial: {resultado[:a+1]}\n")
-        
-        # El cociente es todo menos el último valor de resultado
-        cociente = resultado[:-1]
-        # El último valor de resultado es el residuo
-        residuo = resultado[-1]
-    
-        # Imprimir los resultados
-        print(f"Cociente: {cociente}")
-        print(f"Residuo: {residuo}")
-        
-        # Mostrar si r es un factor del polinomio
-        if residuo == 0:
-            print(f"El número {r} es una raíz del polinomio en la forma (x-r)")
-            polinomio_res = " + ".join(f"{coef}*x^{a-1}" for a, coef in zip(range(grado, -1, -1), cociente))
-            print(f"\nEl polinomio resultante es: {polinomio_res.replace('x^0', '').replace('*x^1', 'x').replace('x^', 'x^').strip(' +')}\n")
+            # Inicializamos la división sintética
+            n = len(coeficientes)
+            resultado = [0] * n  
+            resultado[0] = coeficientes[0]
+            print(f"\nBajamos el primer coeficiente: {resultado[0]}\n")
+
+            # Iteramos sobre los coeficientes para hacer la división sintética
+            for a in range(1, n):
+                multiplicacion = resultado[a - 1] * r
+                resultado[a] = coeficientes[a] + multiplicacion
+
+                # Imprimir los pasos intermedios
+                print(f"Paso {a}:")
+                print(f"Multiplicamos {resultado[a - 1]} por {r}: {multiplicacion}")
+                print(f"Sumamos {coeficientes[a]}: {resultado[a]}")
+                print(f"Resultado parcial: {resultado[:a+1]}\n")
+
+            # El cociente es todo menos el último valor de resultado
+            cociente = resultado[:-1]
+            # El último valor de resultado es el residuo
+            residuo = resultado[-1]
+
+            # Imprimir los resultados
+            print(f"Cociente: {cociente}")
+            print(f"Residuo: {residuo}")
+
+            # Mostrar si r es un factor del polinomio
+            if residuo == 0:
+                print(f"El número {r} es una raíz del polinomio en la forma (x - r)")
+
+                # Reducir el grado del polinomio y actualizar coeficientes
+                coeficientes = cociente
+                grado -= 1
+                print(f"\nEl polinomio resultante es: {mostrar_polinomio(coeficientes, grado)}\n")
+
+                # Preguntar si desea calcular otra raíz para el polinomio resultante
+                try:
+                    selection = int(input("¿Desea calcular otra raíz para el polinomio resultante? [1. Sí, 2. No]: "))
+                    if selection == 2:
+                        break
+                except ValueError:
+                    print("Ingrese una opción válida.")
+            # Comprobar si se puede aplicar un teorema
+            elif type(residuo) == type(1.0):
+                if r > 0 and all(x >= 0 for x in resultado[:-1]):  
+                    print(f"La raíz del polinomio es menor a {r} en la forma (x-r)")
+                elif r < 0 and any(resultado[a] * resultado[a + 1] < 0 for a in range(len(resultado) - 1)):  
+                    print(f"La raíz del polinomio es mayor a {r} en la forma (x-r)")
+
+            # Si no se puede aplicar algún teorema
+            elif type(residuo) == type(1j):
+                print(f"El número {r} no es una raíz del polinomio en la forma (x-r)")
+
+            else:
+                print(f"El número {r} no es una raíz del polinomio en la forma (x-r")
+
+            # Preguntar si desea continuar con el polinomio original
             try:
-                selection = int(input("¿Desea calcular otra raíz para el polinomio resultante? [1. Si, 2. No]: "))
-                if selection == 1:
-                    coeficientes = cociente
-                elif selection == 2:
+                continuar_polinomio = int(input("¿Deseas continuar probando raíces en tu mismo polinomio? [1. Sí, 2. No]: "))
+                if continuar_polinomio == 2:
                     break
-                else:
-                    print("Opción no válida, inténtalo de nuevo./n")
             except ValueError:
                 print("Ingrese una opción válida")
-    
-        # En caso de que no sea, comprobar si se puede aplicar un teorema para saber si el factor es mayor o menor a r
-        elif type(residuo) == type(1.0):
-            if r > 0 and all(x >= 0 for x in resultado[:-1]):  
-                print(f"La raíz del polinomio es menor a {r} en la forma (x-r)")
-            elif r < 0 and any(resultado[a] * resultado[a + 1] < 0 for a in range(len(resultado) - 1)):  
-                print(f"La raíz del polinomio es mayor a {r} en la forma (x-r)")
-        
-        # Si no se puede aplicar algún teorema
-        elif type(residuo) == type(1j):
-            print(f"El número {r} no es una raíz del polinomio en la forma (x-r)")
-        
-        else:
-            print(f"El número {r} no es una raíz del polinomio en la forma (x-r)")
-        
-        continuar_polinom = int(input("¿Deseas continuar probando raíces en tu mismo polinomio? [1. Sí, 2. No]: "))
-        if continuar_polinom == 2:
-            break
-        
+                continue
+
         while True:
             try:
                 print("¿Qué desea hacer?\n")
