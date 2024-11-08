@@ -134,30 +134,27 @@ def RaizPolinomios():
             else:
                 print(f"El número {r} no es una raíz del polinomio en la forma (x-r)")
 
-        #Preguntando si quiere continuar
-        try:
             continuar_polinom = int(input("¿Deseas continuar probando raíces en tu mismo polinomio? [1. Sí, 2. No]: "))
             if continuar_polinom == 2:
                 break
-        except ValueError:
-             print("Ingrese una opción válida.\n")
-    while True:
-        try:
-            print("¿Qué desea hacer?\n")
-            print("1. Regresar al menú principal.")
-            print("2. Continuar en el evaluador de posibles raíces de un polinomio.")
-            print("3. Terminar ejecución.\n")
-            selection = int(input("Ingrese el número de la opción deseada: "))
-            if selection == 1:
-                return
-            elif selection == 2:
-                break
-            elif selection == 3:
-                sys.exit("Ejecución finalizada")
-            else:
-                print("Opción no válida. Inténtalo de nuevo.")
-        except ValueError:
-            print("Por favor, ingresa un número válido.\n")
+
+        while True:
+            try:
+                print("¿Qué desea hacer?\n")
+                print("1. Regresar al menú principal.")
+                print("2. Continuar en el evaluador de posibles raíces de un polinomio.")
+                print("3. Terminar ejecución.\n")
+                selection = int(input("Ingrese el número de la opción deseada: "))
+                if selection == 1:
+                    return
+                elif selection == 2:
+                    break
+                elif selection == 3:
+                    sys.exit("Ejecución finalizada")
+                else:
+                    print("Opción no válida. Inténtalo de nuevo.")
+            except ValueError:
+                print("Por favor, ingresa un número válido.\n")
                 
 #Algoritmo para sistema de ecuaciones
 def GaussJordan():
