@@ -1,8 +1,8 @@
 #Hecho por: Ávila Villaseñor Andrick, Chavarría Ramírez Carlos Alexis y Santos Cruz Lair Abraham
 
 import cmath as cmt
-import numpy as np
 import sys
+import numpy as np
 
 print("Proyecto realizado por:\n")
 print("Ávila Villaseñor Andrick")
@@ -11,7 +11,7 @@ print("Santos Cruz Lair Abraham")
 print("\n")
 def Proyecto():
     while True: 
-        print("Bienvenido a nuestro proyecto de ALGEBRA\n")
+        print("Bienvenido a nuestro proyecto de ÁLGEBRA\n")
         print("Este programa te permite: \n")
         print("1. Evaluador de posibles raíces de un polinomio")
         print("2. Solucionador de Sistemas de ecuaciones por Método Gauss-Jordan")
@@ -178,7 +178,6 @@ def RaizPolinomios():
 
 #Algoritmo para sistema de ecuaciones
 def GaussJordan():
-
     while True:
         print("Has elegido la opción: Solucionador de Sistemas de ecuaciones por Método Gauss-Jordan")
         print("Bienvenido a nuestro solucionador de Sistemas de ecuaciones por Método Gauss-Jordan")
@@ -198,7 +197,7 @@ def GaussJordan():
                 variables.append(chr(97 + i))
             else:
                 variables.append(f"x{i + 1}")
-    
+
         #CREAREMOS EL SISTEMA DE ECUACIONES EN LA CUAL LO VEREMOS COMO UNA MATRIZ
         matriz_jordan = []
         print("Ingrese los coeficientes y el resultado para cada ecuación:")
@@ -211,14 +210,14 @@ def GaussJordan():
                         if j < n:
                             valor = float(input(f"Coeficiente de {variables[j]}: "))
                         else:
-                            valor = float(input("Resultado:"))
-                                
+                            valor = float(input("Resultado: "))
+
                         fila.append(valor)
                     matriz_jordan.append(fila)
             except ValueError:
                 print("Ingrese un número válido")
                 continue
-    
+
             # REALIZANDO EL TRIANGULO INFERIOR
             for i in range(n):
                 # INTERCAMBIANDO FILAS SI ES QUE EL PRIMER ELEMENTO DE NUESTRA DIAGONAL ES IGUAL A 0
@@ -235,7 +234,7 @@ def GaussJordan():
                                 break
                 except ValueError:
                     print("Ingresa un número válido")
-        
+
                 #REALIZANDO QUE EL ELEMENTO DE LA DIAGONAL SEA 1
                 elemento_diagonal = matriz_jordan[i][i]
                 for j in range(n + 1):
@@ -283,7 +282,7 @@ def GaussJordan():
                     print(f"Multiplicar fila {i + 1} por {1 / elemento_diagonal} para hacer que el elemento de la diagonal sea 1")
                 for fila in matriz_jordan:
                     print(fila)
-        
+
                 # VOLVIENDO 0 LO QUE ESTA DEBAJO DE LA DIAGONAL
                 for k in range(i + 1, n):
                     inverso_aditivo = -1 * matriz_jordan[k][i]
@@ -293,7 +292,7 @@ def GaussJordan():
                     for fila in matriz_jordan:
                         print(fila)
                     print("\n")
-        
+
             # REALIZANDO TRIANGULO SUPERIOR
             for i in range(n - 1, -1, -1):
                 for k in range(i - 1, -1, -1):
@@ -304,13 +303,13 @@ def GaussJordan():
                     for fila in matriz_jordan:
                         print(fila)
                     print("\n")
-        
+
             # IMPRIMIENDO VALORES DE LAS VARIABLES QUE SATISFACEN EL SISTEMA DE ECUACIONES
             print("Valores finales: ")
             for i in range(n):
                 RESULTADO = (matriz_jordan[i][n])
                 print(f"{variables[i]} = {RESULTADO}")
-        
+
             #Preguntar la siguiente acción a realizar
             while True:
                 try:
@@ -339,7 +338,7 @@ def Matrices():
             print("1. Adición.")
             print("2. Sustracción.")
             print("3. Multiplicación.")
-            print("4. Matriz inversa.\n")
+            print("4. Matriz inversa.")
             print("5. Regresar al menú principal.\n")
             selection = int(input("Seleccione la operación que desea realizar: "))
 
@@ -368,7 +367,7 @@ def Matrices():
                     except ValueError:
                         print("Por favor, ingresa un número válido.\n")
 
-                # Crear matrices A y B e inicializar en 0, añadir complejos
+                #Crear matrices A y B e inicializar en 0
                 matriz_A = np.zeros((filas_A, columnas_A), dtype=complex)
                 matriz_B = np.zeros((filas_B, columnas_B), dtype=complex)
 
@@ -379,13 +378,13 @@ def Matrices():
                         while True:
                             try:
                                 elemento = input(f"Elemento A {i+1},{j+1}: ")
-                                matriz_A[i, j] = complex(elemento) #Convertir el formato del elemento a número complejo
+                                matriz_A[i, j] = complex(elemento)
                                 break 
                             except ValueError:
                                 print("Por favor, ingresa un número válido.")
 
                 # Imprimir la matriz A
-                print("La matriz A ingresada es:")
+                print("\nLa matriz A ingresada es:")
                 print(matriz_A)
 
                 # Ingresar elementos para la matriz B
@@ -401,11 +400,12 @@ def Matrices():
                                 print("Por favor, ingresa un número válido.")
 
                 # Imprimir la matriz B
-                print("La matriz B ingresada es:")
+                print("\nLa matriz B ingresada es:")
                 print(matriz_B)
 
             #Algoritmo de adición de matrices
             if selection == 1:
+                print("Has elegido la opción: Adición")
                 if matriz_A.shape != matriz_B.shape:
                     print("Las dimensiones de las matrices no son iguales, por lo cual no se puede realizar la operación.")
                 #Sumar los elementos de A y B e imprimir los pasos, almacenar el resultado
@@ -421,6 +421,7 @@ def Matrices():
                         
             #Algoritmo de sustracción de matrices
             elif selection == 2:
+                print("Has elegido la opción: Sustracción")
                 if matriz_A.shape != matriz_B.shape:
                     print("Las dimensiones de las matrices no son iguales, por lo cual no se puede realizar la operación.")
                 #Restar los elementos de A y B e imprimir los pasos, almacenar el resultado
@@ -433,29 +434,113 @@ def Matrices():
 
                         print("La matriz resultante es:")
                         print(matriz_C)
+            #Algoritmo de multiplicación de matrices
             elif selection == 3:
-                #Algoritmo de multiplicación de matrices
-                matriz_c = [[0 for _ in range(columnas_B)] for _ in range(filas_A)]
+                print("Has elegido la opción: Multiplicación")
                 if filas_A != columnas_B or columnas_A != filas_B:
                     print("Las matrices no son conformables, por lo cual no se puede realizar la operación.")
                 else:
-                    resultado = [[0 for j in range(columnas_A)] for i in range(filas_A)]
-                    for i in range(filas_A):  
-                        for j in range(columnas_B):
-                            for k in range(columnas_A):
-                                matriz_c[i][j] = matriz_A[i][k] * matriz_B[k][j]
-                                #Imprimimos los pasos intermedios
-                                print(f"Multiplicamos {matriz_A[i][k]} por {matriz_B[k][j]}: {matriz_c[i][j]}")
-                                print(f"Resultado parcial: {matriz_c[i][j]}\n")
-                #Imprimir resultado
-                    print("La matriz resultado de la multiplicación es:")
-                for fila in matriz_c:
-                    print(fila)
-            elif selection == 4:
+                    matriz_C = np.dot(matriz_A, matriz_B)
+                    for i in range(matriz_A.shape[0]):
+                        for j in range(matriz_A.shape[1]):
+                            print(f"Multiplicamos la fila {i+1} de la matriz A con la columna {j+1} de la matriz B: {matriz_A[i, :]} * {matriz_B[:, j]}")
+                            print(f"Resultado parcial para la posición {i+1},{j+1}: {matriz_C[i, j]}")
+                            print()
+                            
+                        #Imprimir la matriz resultante
+                        print("La matriz resultante es:")
+                        print(matriz_C)
+
             #Algoritmo de matriz inversa
-                print("Matriz inversa")
+            elif selection == 4:
+                print("Has elegido la opción: Matriz inversa")
+
+                try:
+                    columnas = int(input("Introduce el número de columnas de tu matriz: "))
+                    if columnas <= 0:
+                        print("El número de columnas debe ser un número entero positivo. Inténtalo de nuevo.\n")
+                    else:
+                        filas = int(input("Introduce el número de filas de tu matriz: "))
+                        if filas <= 0:
+                            print("El número de filas debe ser un número entero positivo. Inténtalo de nuevo.\n")
+                        else:
+                            # Verificar que la matriz sea cuadrada
+                            if filas != columnas:
+                                print("La matriz debe ser cuadrada Inténtalo de nuevo.\n")
+                            else:
+                                # Crear la matriz e inicializar en 0
+                                matriz = np.zeros((filas, columnas), dtype=complex)
+
+                                # Solicitar los elementos de la matriz
+                                print("Ingresa los elementos de la matriz: \n")
+                                for i in range(filas):
+                                    for j in range(columnas):
+                                        while True:
+                                            try:
+                                                elemento = input(f"Elemento {i+1},{j+1}: ")
+                                                matriz[i, j] = complex(elemento)
+                                                break 
+                                            except ValueError:
+                                                print("Por favor, ingresa un número válido.")
+
+                                # Imprimir la matriz 
+                                print("\nLa matriz ingresada es:")
+                                print(matriz)
+
+                                # Determinar si se puede realizar la matriz inversa
+                                if np.linalg.det(matriz) == 0:
+                                    print("La matriz no tiene inversa.")
+                                else:
+                                    # Crear matriz identidad con las mismas dimensiones de la matriz
+                                    matriz_identidad = np.eye(filas, dtype=complex)
+
+                                    # Copiar la matriz original y la identidad
+                                    A = matriz.copy()
+                                    I = matriz_identidad.copy()
+
+                                    # Mostrar matrices iniciales
+                                    print("\nIniciamos con la matriz y la matriz identidad:")
+                                    print("Matriz:")
+                                    print(A)
+                                    
+                                    print("Matriz identidad:")
+                                    print(I)
+
+                                    #  Solución de la matriz inversa
+                                    for i in range(filas):
+                                        # Igualar a 1 el primer término
+                                        if A[i, i] != 1:
+                                            factor = A[i, i]
+                                            A[i, :] = A[i, :] / factor
+                                            I[i, :] = I[i, :] / factor
+                                            print(f"\nDividimos la fila {i+1} por el valor Matriz[{i},{i}] = {factor}:")
+                                            print("Matriz después de la división:")
+                                            print(A)
+                                            print("Matriz identidad después de la división:")
+                                            print(I)
+
+                                        # Igualar a 0 los demás elementos de la columna i
+                                        for j in range(filas):
+                                            if j != i:
+                                                factor = A[j, i]
+                                                A[j, :] = A[j, :] - factor * A[i, :]
+                                                I[j, :] = I[j, :] - factor * I[i, :]
+                                                print(f"\nRestamos {factor} veces la fila {i+1} de la fila {j+1}:")
+                                                print(f"Factor de eliminación: {factor}")
+                                                print("Matriz después de la resta:")
+                                                print(A)
+                                                print("Matriz identidad después de la resta:")
+                                                print(I)
+
+                                    # Imprimir la matriz inversa
+                                    print("\nLa matriz inversa es:")
+                                    print(I)
+
+                except ValueError:
+                    print("Por favor, ingresa un número válido.\n")
+            
             elif selection == 5:
-               print("Menu") 
+               return 
             else:
                 print("Opción no válida. Por favor, intenta de nuevo.\n")
         except ValueError:
