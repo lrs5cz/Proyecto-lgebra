@@ -34,6 +34,7 @@ def Proyecto():
                 print("Opción no válida. Por favor, intenta de nuevo.\n")
         except ValueError:
             print("Por favor, ingresa un número válido.\n")
+            
 #Algoritmo para raíces del polinomio
 def RaizPolinomios():
     while True:
@@ -133,10 +134,13 @@ def RaizPolinomios():
             else:
                 print(f"El número {r} no es una raíz del polinomio en la forma (x-r)")
 
-            ##Preguntando si quiere continuar
-        continuar_polinom = int(input("¿Deseas continuar probando raíces en tu mismo polinomio? [1. Sí, 2. No]: "))
-        if continuar_polinom == 2:
-            break
+        #Preguntando si quiere continuar
+        try:
+            continuar_polinom = int(input("¿Deseas continuar probando raíces en tu mismo polinomio? [1. Sí, 2. No]: "))
+            if continuar_polinom == 2:
+                break
+        except ValueError:
+             print("Ingrese una opción válida.\n")
     while True:
         try:
             print("¿Qué desea hacer?\n")
@@ -397,4 +401,3 @@ def Matrices():
                     print("Por favor, ingresa un número válido.\n")
 #Ejecutar el proyecto
 Proyecto()
-
