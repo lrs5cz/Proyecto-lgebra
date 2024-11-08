@@ -242,7 +242,7 @@ def GaussJordan():
                     if elemento_diagonal == 0:
                         #Revisando si el resultado es = 0
                         if(matriz_jordan[i][i+1] == 0):
-                            print("El sistema de ecuaciones es compatible indeterminado")
+                            print("El sistema de ecuaciones es compatible indeterminado, por lo tanto tiene soluciones infinitas!")
                             while True:
                                 try:
                                     print("¿Qué desea hacer?\n")
