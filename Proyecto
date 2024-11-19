@@ -2,6 +2,7 @@
 
 import cmath as cmt
 import sys
+import numpy as np
 
 print("Proyecto realizado por:\n")
 print("Ávila Villaseñor Andrick")
@@ -10,13 +11,13 @@ print("Santos Cruz Lair Abraham")
 print("\n")
 def Proyecto():
     while True: 
-        print("Bienvenido a nuestro proyecto de ALGEBRA\n")
+        print("Bienvenido a nuestro proyecto de ÁLGEBRA\n")
         print("Este programa te permite: \n")
         print("1. Evaluador de posibles raíces de un polinomio")
         print("2. Solucionador de Sistemas de ecuaciones por Método Gauss-Jordan")
         print("3. Operador de matrices")
         print("4. Salir\n")
-            
+
         #Selección de operación
         try:
             selection = int(input("Ingrese el número del programa al cual desea acceder: "))
@@ -34,16 +35,18 @@ def Proyecto():
                 print("Opción no válida. Por favor, intenta de nuevo.\n")
         except ValueError:
             print("Por favor, ingresa un número válido.\n")
-#Algoritmo para raíces del polinomio
+
+# Algoritmo para raíces del polinomio
 def RaizPolinomios():
     while True:
         print("Has elegido la opción: Evaluador de posibles raíces de un polinomio")
         print("Bienvenido a nuestro evaluador de posibles raíces de un polinomio")
-        
+
         # Grado del polinomio
         while True:
             try:
                 grado = int(input("Introduce el grado del polinomio: "))
+                print("\n")
                 if grado <= 0:
                     print("El grado del polinomio debe ser un número entero positivo. Inténtalo de nuevo.\n")
                     continue
@@ -51,35 +54,55 @@ def RaizPolinomios():
             except ValueError:
                 print("Por favor, ingresa un número válido.\n")
                 continue
-        # Coeficientes del polinomio al usuario
+
+        # Coeficientes del polinomio al usuario    
         coeficientes = []
-        print(f"Introduce los coeficientes del polinomio de grado {grado} (desde el término de mayor grado hasta el término independiente):")
+        print(f"Introduce los coeficientes del polinomio de grado {grado}:")
         for a in range(grado, -1, -1):
-            dom_coeficiente = int(input("Tu coeficiente pertenece a los números complejos?: [1. Si, 2.No] "))
-            if dom_coeficiente == 1:
-                coeficiente = complex(input(f"Coeficiente de x^{a}: "))
-            else:
-                coeficiente = float(input(f"Coeficiente de x^{a}: "))
-            coeficientes.append(coeficiente)
-            
-        polinomio = " + ".join(f"{coef}*x^{a}" for a, coef in zip(range(grado, -1, -1), coeficientes))
-        print(f"\nEl polinomio es: {polinomio.replace('x^0', '').replace('*x^1', 'x').replace('x^', 'x^').strip(' +')}\n")
-        
-        # Valor de r (para dividir entre (x - r))
+            while True:
+                try:
+                    dom_coeficiente = int(input("¿Tu coeficiente pertenece a los números complejos?: [1. Sí, 2. No] "))
+                    if dom_coeficiente == 1:
+                        coeficiente = complex(input(f"Coeficiente de x^{a}: "))
+                    elif dom_coeficiente == 2:
+                        coeficiente = float(input(f"Coeficiente de x^{a}: "))
+                    else:
+                        print("Opción no válida, por favor, intenta de nuevo.")
+                        continue
+                    coeficientes.append(coeficiente)
+                    break
+                except ValueError:
+                    print("Por favor, ingresa un número válido.")
+
+        # Mostrar el polinomio ingresado
+        def mostrar_polinomio(coeficientes, grado):
+            polinomio = " + ".join(f"{coef}*x^{a}" for a, coef in zip(range(grado, -1, -1), coeficientes))
+            return polinomio.replace('x^0', '').replace('*x^1', 'x').replace('x^', 'x^').strip(' +')
+
+        print(f"\nEl polinomio es: {mostrar_polinomio(coeficientes, grado)}\n")
+
         while True:
-            factor = int(input("Tu factor "r" pertenece a los números complejos?: [1. Si, 2.No]: "))
-            if factor == 1:
-                r = complex(input("Introduce el valor de r (para dividir entre (x - r)): "))
-            else:
-                r = float(input("Introduce el valor de r (para dividir entre (x - r)): "))
+            # Proceso para evaluar raíces
+            while True:
+                try:
+                    factor = int(input("¿Tu factor 'r' pertenece a los números complejos?: [1. Sí, 2. No]: "))
+                    if factor == 1:
+                        r = complex(input("Introduce el valor de r (para dividir entre (x - r)): "))
+                        break
+                    elif factor == 2:
+                        r = float(input("Introduce el valor de r (para dividir entre (x - r)): "))
+                        break
+                    else:
+                        print("Opción no válida, por favor, ingresa una opción válida.")
+                        continue
+                except ValueError:
+                    print("Por favor, ingresa un número válido.")
+                    continue
+            print("\n")
 
             # Inicializamos la división sintética
             n = len(coeficientes)
-
-            # Almacenamos los datos
             resultado = [0] * n  
-
-            # Bajamos el primer coeficiente directamente
             resultado[0] = coeficientes[0]
             print(f"\nBajamos el primer coeficiente: {resultado[0]}\n")
 
@@ -105,21 +128,21 @@ def RaizPolinomios():
 
             # Mostrar si r es un factor del polinomio
             if residuo == 0:
-                print(f"El número {r} es una raíz del polinomio en la forma (x-r)")
-                polinomio_res = " + ".join(f"{coef}*x^{a-1}" for a, coef in zip(range(grado, -1, -1), cociente))
-                print(f"\nEl polinomio resultante es: {polinomio_res.replace('x^0', '').replace('*x^1', 'x').replace('x^', 'x^').strip(' +')}\n")   
-                try:
-                    selection = int(input("¿Desea calcular otra raíz para el polinomio resultante? [1. Si] [2. No]: "))
-                    if selection == 1:
-                        coeficientes = cociente
-                    elif selection == 2:
-                        break
-                    else:
-                        print("Opción no válida, inténtalo de nuevo./n")
-                except ValueError:
-                    print("Ingrese una opción válida")
+                print(f"El número {r} es una raíz del polinomio en la forma (x - r)")
 
-            # En caso de que no sea, comprobar si se puede aplicar un teorema para saber si el factor es mayor o menor a r
+                # Reducir el grado del polinomio y actualizar coeficientes
+                coeficientes = cociente
+                grado -= 1
+                print(f"\nEl polinomio resultante es: {mostrar_polinomio(coeficientes, grado)}\n")
+
+                # Preguntar si desea calcular otra raíz para el polinomio resultante
+                try:
+                    selection = int(input("¿Desea calcular otra raíz para el polinomio resultante? [1. Sí, 2. No]: "))
+                    if selection == 2:
+                        break
+                except ValueError:
+                    print("Ingrese una opción válida.")
+            # Comprobar si se puede aplicar un teorema
             elif type(residuo) == type(1.0):
                 if r > 0 and all(x >= 0 for x in resultado[:-1]):  
                     print(f"La raíz del polinomio es menor a {r} en la forma (x-r)")
@@ -127,126 +150,26 @@ def RaizPolinomios():
                     print(f"La raíz del polinomio es mayor a {r} en la forma (x-r)")
 
             # Si no se puede aplicar algún teorema
-            elif type(residuo)==type(1j):
+            elif type(residuo) == type(1j):
                 print(f"El número {r} no es una raíz del polinomio en la forma (x-r)")
 
             else:
-                print(f"El número {r} no es una raíz del polinomio en la forma (x-r)")
+                print(f"El número {r} no es una raíz del polinomio en la forma (x-r")
 
-            ##Preguntando si quiere continuar
-        continuar_polinom = int(input("¿Deseas continuar probando raíces en tu mismo polinomio? [1. Sí, 2. No]: "))
-        if continuar_polinom == 2:
-            break
-    while True:
-        try:
-            print("¿Qué desea hacer?\n")
-            print("1. Regresar al menú principal.")
-            print("2. Continuar en el evaluador de posibles raíces de un polinomio.")
-            print("3. Terminar ejecución.\n")
-            selection = int(input("Ingrese el número de la opción deseada: "))
-            if selection == 1:
-                return
-            elif selection == 2:
-                break
-            elif selection == 3:
-                sys.exit("Ejecución finalizada")
-            else:
-                print("Opción no válida. Inténtalo de nuevo.")
-        except ValueError:
-            print("Por favor, ingresa un número válido.\n")
-                
-#Algoritmo para sistema de ecuaciones
-def GaussJordan():
-    
-    while True:
-        print("Has elegido la opción: Solucionador de Sistemas de ecuaciones por Método Gauss-Jordan")
-        print("Bienvenido a nuestro solucionador de Sistemas de ecuaciones por Método Gauss-Jordan")
-        # SOLICITANDO N ECUACIONES Y VARIABLES
-        n = int(input("Ingrese el número de ecuaciones (y variables) de su sistema: "))
-
-        # CREAMOS UNA LISTA CON LAS POSIBLES VARIABLES QUE PODREMOS UTILIZAR (USANDO LETRAS DEL ALFABETO)
-        variables = []
-        for i in range(n):
-            if i < 26:
-                variables.append(chr(97 + i))
-            else:
-                variables.append(f"x{i + 1}")
-
-        #CREAREMOS EL SISTEMA DE ECUACIONES EN LA CUAL LO VEREMOS COMO UNA MATRIZ
-        matriz_jordan = []
-        print("Ingrese los coeficientes y el resultado para cada ecuación:")
-        for i in range(n):
-            fila = []
-            print(f"Ecuación {i + 1}:")
-            for j in range(n + 1):
-                if j < n:
-                    valor = float(input(f"Coeficiente de {variables[j]}: "))
-                else:
-                    valor = float(input("Resultado:"))
-                fila.append(valor)
-            matriz_jordan.append(fila)
-
-        # REALIZANDO EL TRIANGULO INFERIOR
-        for i in range(n):
-            # INTERCAMBIANDO FILAS SI ES QUE EL PRIMER ELEMENTO DE NUESTRA DIAGONAL ES IGUAL A 0
-            try:    
-                if matriz_jordan[i][i] == 0:
-                    for k in range(i + 1, n):
-                        if matriz_jordan[k][i] != 0:
-                            # Intercambiar filas
-                            matriz_jordan[i], matriz_jordan[k] = matriz_jordan[k], matriz_jordan[i]
-                            print(f"Intercambiar fila {i + 1} con fila {k + 1}")
-                            for fila in matriz_jordan:
-                                print(fila)
-                            print()
-                            break
-                        else:
-                            print("El sistema no tiene solución única.")
+            # Preguntar si desea continuar con el polinomio original
+            try:
+                continuar_polinomio = int(input("¿Deseas continuar probando raíces en tu mismo polinomio? [1. Sí, 2. No]: "))
+                if continuar_polinomio == 2:
+                    break
             except ValueError:
-                print("Ingresa un número válido")
+                print("Ingrese una opción válida")
+                continue
 
-            #REALIZANDO QUE EL ELEMENTO DE LA DIAGONAL SEA 1
-            elemento_diagonal = matriz_jordan[i][i]
-            for j in range(n + 1):
-                matriz_jordan[i][j] /= elemento_diagonal
-            print(f"Multiplicar fila {i + 1} por {1 / elemento_diagonal} para hacer que el elemento de la diagonal sea 1")
-            for fila in matriz_jordan:
-                print(fila)
-            print()
-
-            # VOLVIENDO 0 LO QUE ESTA DEBAJO DE LA DIAGONAL
-            for k in range(i + 1, n):
-                inverso_aditivo = -1 * matriz_jordan[k][i]
-                for j in range(n + 1):
-                    matriz_jordan[k][j] += inverso_aditivo * matriz_jordan[i][j]
-                print(f"Multiplicar {inverso_aditivo} * fila {i + 1} y sumarlo en fila {k + 1}, escribiéndolo en la fila {k + 1}")
-                for fila in matriz_jordan:
-                    print(fila)
-                print()
-
-        # REALIZANDO TRIANGULO SUPERIOR
-        for i in range(n - 1, -1, -1):
-            for k in range(i - 1, -1, -1):
-                inverso_aditivo = -1 * matriz_jordan[k][i]
-                for j in range(n + 1):
-                    matriz_jordan[k][j] += inverso_aditivo * matriz_jordan[i][j]
-                print(f"Multiplicar {inverso_aditivo} * fila {i + 1} y sumarlo en fila {k + 1}, escribiéndolo en la fila {k + 1}")
-                for fila in matriz_jordan:
-                    print(fila)
-                print()
-
-        # IMPRIMIENDO VALORES DE LAS VARIABLES QUE SATISFACEN EL SISTEMA DE ECUACIONES
-        print("Valores finales: ")
-        for i in range(n):
-            RESULTADO = (matriz_jordan[i][n])
-            print(f"{variables[i]} = {RESULTADO}")
-
-        #Preguntar la siguiente acción a realizar
         while True:
             try:
                 print("¿Qué desea hacer?\n")
-                print("1. Regresar al menú principal.\n")
-                print("2. Continuar resolviendo otro sistema.\n")
+                print("1. Regresar al menú principal.")
+                print("2. Continuar en el evaluador de posibles raíces de un polinomio.")
                 print("3. Terminar ejecución.\n")
                 selection = int(input("Ingrese el número de la opción deseada: "))
                 if selection == 1:
@@ -260,6 +183,158 @@ def GaussJordan():
             except ValueError:
                 print("Por favor, ingresa un número válido.\n")
 
+#Algoritmo para sistema de ecuaciones
+def GaussJordan():
+    while True:
+        print("Has elegido la opción: Solucionador de Sistemas de ecuaciones por Método Gauss-Jordan")
+        print("Bienvenido a nuestro solucionador de Sistemas de ecuaciones por Método Gauss-Jordan")
+        # SOLICITANDO N ECUACIONES Y VARIABLES
+        try:
+            n = int(input("Ingrese el número de ecuaciones (y variables) de su sistema: "))
+            if n <= 1:
+                print("El número de ecuaciones debe ser mayor que 1, inténtalo de nuevo.")
+                continue
+        except ValueError:
+            print("Ingrese un número válido.")
+            continue
+            # CREAMOS UNA LISTA CON LAS POSIBLES VARIABLES QUE PODREMOS UTILIZAR (USANDO LETRAS DEL ALFABETO)
+        variables = []
+        for i in range(n):
+            if i < 26:
+                variables.append(chr(97 + i))
+            else:
+                variables.append(f"x{i + 1}")
+
+        #CREAREMOS EL SISTEMA DE ECUACIONES EN LA CUAL LO VEREMOS COMO UNA MATRIZ
+        matriz_jordan = []
+        print("Ingrese los coeficientes y el resultado para cada ecuación:")
+        while True:    
+            try:
+                for i in range(n):
+                    fila = []
+                    print(f"Ecuación {i + 1}:")
+                    for j in range(n + 1):
+                        if j < n:
+                            valor = float(input(f"Coeficiente de {variables[j]}: "))
+                        else:
+                            valor = float(input("Resultado: "))
+
+                        fila.append(valor)
+                    matriz_jordan.append(fila)
+            except ValueError:
+                print("Ingrese un número válido")
+                continue
+
+            # REALIZANDO EL TRIANGULO INFERIOR
+            for i in range(n):
+                # INTERCAMBIANDO FILAS SI ES QUE EL PRIMER ELEMENTO DE NUESTRA DIAGONAL ES IGUAL A 0
+                try:    
+                    if matriz_jordan[i][i] == 0:
+                        for k in range(i + 1, n):
+                            if matriz_jordan[k][i] != 0:
+                                #Intercambiar filas
+                                matriz_jordan[i], matriz_jordan[k] = matriz_jordan[k], matriz_jordan[i]
+                                print(f"Intercambiar fila {i + 1} con fila {k + 1}")
+                                for fila in matriz_jordan:
+                                    print(fila)
+                                print()
+                                break
+                except ValueError:
+                    print("Ingresa un número válido")
+
+                #REALIZANDO QUE EL ELEMENTO DE LA DIAGONAL SEA 1
+                elemento_diagonal = matriz_jordan[i][i]
+                for j in range(n + 1):
+                    if elemento_diagonal == 0:
+                        #Revisando si el resultado es = 0
+                        if(matriz_jordan[i][i+1] == 0):
+                            print("El sistema de ecuaciones es compatible indeterminado, por lo tanto tiene soluciones infinitas!")
+                            while True:
+                                try:
+                                    print("¿Qué desea hacer?\n")
+                                    print("1. Regresar al menú principal.\n")
+                                    print("2. Continuar resolviendo otro sistema.\n")
+                                    print("3. Terminar ejecución.\n")
+                                    selection = int(input("Ingrese el número de la opción deseada: "))
+                                    if selection == 1:
+                                        Proyecto()
+                                    elif selection == 2:
+                                        GaussJordan()
+                                    elif selection == 3:
+                                        sys.exit("Ejecución finalizada")
+                                    else:
+                                        print("Opción no válida. Inténtalo de nuevo.")
+                                except ValueError:
+                                    print("Por favor, ingresa un número válido.\n")
+                        else:
+                            print("El sistema de ecuaciones es incompatible! pruebe de nuevo!")
+                            while True:
+                                try:
+                                    print("¿Qué desea hacer?\n")
+                                    print("1. Regresar al menú principal.\n")
+                                    print("2. Continuar resolviendo otro sistema.\n")
+                                    print("3. Terminar ejecución.\n")
+                                    selection = int(input("Ingrese el número de la opción deseada: "))
+                                    if selection == 1:
+                                        Proyecto()
+                                    elif selection == 2:
+                                        GaussJordan()
+                                    elif selection == 3:
+                                        sys.exit("Ejecución finalizada")
+                                    else:
+                                        print("Opción no válida. Inténtalo de nuevo.")
+                                except ValueError:
+                                    print("Por favor, ingresa un número válido.\n")
+                    matriz_jordan[i][j] /= elemento_diagonal                
+                    print(f"Multiplicar fila {i + 1} por {1 / elemento_diagonal} para hacer que el elemento de la diagonal sea 1")
+                for fila in matriz_jordan:
+                    print(fila)
+
+                # VOLVIENDO 0 LO QUE ESTA DEBAJO DE LA DIAGONAL
+                for k in range(i + 1, n):
+                    inverso_aditivo = -1 * matriz_jordan[k][i]
+                    for j in range(n + 1):
+                        matriz_jordan[k][j] += inverso_aditivo * matriz_jordan[i][j]
+                    print(f"Multiplicar {inverso_aditivo} * fila {i + 1} y sumarlo en fila {k + 1}, escribiéndolo en la fila {k + 1}")
+                    for fila in matriz_jordan:
+                        print(fila)
+                    print("\n")
+
+            # REALIZANDO TRIANGULO SUPERIOR
+            for i in range(n - 1, -1, -1):
+                for k in range(i - 1, -1, -1):
+                    inverso_aditivo = -1 * matriz_jordan[k][i]
+                    for j in range(n + 1):
+                        matriz_jordan[k][j] += inverso_aditivo * matriz_jordan[i][j]
+                    print(f"Multiplicar {inverso_aditivo} * fila {i + 1} y sumarlo en fila {k + 1}, escribiéndolo en la fila {k + 1}")
+                    for fila in matriz_jordan:
+                        print(fila)
+                    print("\n")
+
+            # IMPRIMIENDO VALORES DE LAS VARIABLES QUE SATISFACEN EL SISTEMA DE ECUACIONES
+            print("Valores finales: ")
+            for i in range(n):
+                RESULTADO = (matriz_jordan[i][n])
+                print(f"{variables[i]} = {RESULTADO}")
+
+            #Preguntar la siguiente acción a realizar
+            while True:
+                try:
+                    print("¿Qué desea hacer?\n")
+                    print("1. Regresar al menú principal.\n")
+                    print("2. Continuar resolviendo otro sistema.\n")
+                    print("3. Terminar ejecución.\n")
+                    selection = int(input("Ingrese el número de la opción deseada: "))
+                    if selection == 1:
+                        return
+                    elif selection == 2:
+                        GaussJordan()
+                    elif selection == 3:
+                        sys.exit("Ejecución finalizada")
+                    else:
+                        print("Opción no válida. Inténtalo de nuevo.")
+                except ValueError:
+                    print("Por favor, ingresa un número válido.\n")
 
 def Matrices():
     print("Has elegido la opción: Operador de matrices")    
@@ -270,15 +345,13 @@ def Matrices():
             print("1. Adición.")
             print("2. Sustracción.")
             print("3. Multiplicación.")
-            print("4. Matriz inversa.\n")
+            print("4. Matriz inversa.")
+            print("5. Regresar al menú principal.\n")
             selection = int(input("Seleccione la operación que desea realizar: "))
-                
+
             if selection in [1, 2, 3]:
-            #Algoritmo para solicitar matrices
-                matriz_A = []
-                matriz_B = []
                 while True:
-                    #Obtener número de columnas y filas de la matriz A
+                    # Solicitar dimensiones de las matrices A y B
                     try:
                         columnas_A = int(input("Introduce el número de columnas de tu matriz A: "))
                         if columnas_A <= 0:
@@ -288,16 +361,7 @@ def Matrices():
                         if filas_A <= 0:
                             print("El número de filas debe ser un número entero positivo. Inténtalo de nuevo.\n")
                             continue
-                    except ValueError:
-                        print("Por favor, ingresa un número válido.\n")
-                    for i in range(filas_A):
-                        fila_A = input(f"Ingrese los elementos de la fila {i+1} de la matriz A (separados por espacios): ")
-                        matriz_A.append([float(x) for x in fila_A.split()])
-                    print("La matriz ingresada es:")
-                    for fila_A in matriz_A:
-                        print("Matriz A: ", fila_A)           
-                        #Obtener número de columnas y filas de la matriz B
-                    try:
+
                         columnas_B = int(input("Introduce el número de columnas de tu matriz B: "))
                         if columnas_B <= 0:
                             print("El número de columnas debe ser un número entero positivo. Inténtalo de nuevo.\n")
@@ -306,73 +370,184 @@ def Matrices():
                         if filas_B <= 0:
                             print("El número de filas debe ser un número entero positivo. Inténtalo de nuevo.\n")
                             continue
+                        break
                     except ValueError:
                         print("Por favor, ingresa un número válido.\n")
-                        
-                    for i in range(filas_B):
-                        fila_B = input(f"Ingrese los elementos de la fila {i+1} de la matriz B (separados por espacios): ")
-                        matriz_B.append([float(x) for x in fila_B.split()])
-                    print("La matriz ingresada es:")
-                    for fila_B in matriz_B:
-                        print("Matriz B: ", fila_B)
-                    break
+
+                #Crear matrices A y B e inicializar en 0
+                matriz_A = np.zeros((filas_A, columnas_A), dtype=complex)
+                matriz_B = np.zeros((filas_B, columnas_B), dtype=complex)
+
+                # Ingresar elementos para la matriz A
+                print("Ingresa los elementos de la matriz A: \n")
+                for i in range(filas_A):
+                    for j in range(columnas_A):
+                        while True:
+                            try:
+                                elemento = input(f"Elemento A {i+1},{j+1}: ")
+                                matriz_A[i, j] = complex(elemento)
+                                break 
+                            except ValueError:
+                                print("Por favor, ingresa un número válido.")
+
+                # Imprimir la matriz A
+                print("\nLa matriz A ingresada es:")
+                print(matriz_A)
+
+                # Ingresar elementos para la matriz B
+                print("Ingresa los elementos de la matriz B: \n")
+                for i in range(filas_B):
+                    for j in range(columnas_B):
+                        while True:
+                            try:
+                                elemento = input(f"Elemento B {i+1},{j+1}: ")
+                                matriz_B[i, j] = complex(elemento)
+                                break
+                            except ValueError:
+                                print("Por favor, ingresa un número válido.")
+
+                # Imprimir la matriz B
+                print("\nLa matriz B ingresada es:")
+                print(matriz_B)
+
+            #Algoritmo de adición de matrices
             if selection == 1:
-                #Algoritmo de adición de matrices
-                if filas_A != filas_B or columnas_A != columnas_B:
+                print("Has elegido la opción: Adición")
+                if matriz_A.shape != matriz_B.shape:
                     print("Las dimensiones de las matrices no son iguales, por lo cual no se puede realizar la operación.")
-                #Sumar los elementos de A y B y almacenar en resultado
+                #Sumar los elementos de A y B e imprimir los pasos, almacenar el resultado
                 else:
-                    resultado = [[0 for j in range(columnas_A)] for i in range(filas_A)]
-                    for i in range(filas_A):  
-                        for j in range(columnas_A):  
-                            resultado[i][j] = matriz_A[i][j] + matriz_B[i][j]
-                            #Imprimimos los pasos intermedios
-                            print(f"Sumamos {matriz_A[i][j]} mas {matriz_B[i][j]}: {resultado[i][j]}")
-                            print(f"Resultado parcial: {resultado[i][j]}\n")
-                #Imprimir resultado
-                    print("La matriz resultado de la adición es:")
-                    for fila in resultado:
-                        print(fila)
+                    matriz_C = matriz_A + matriz_B
+                    for i in range(matriz_A.shape[0]):
+                        for j in range(matriz_A.shape[1]):
+                            print(f"Sumamos {matriz_A[i, j]} más {matriz_B[i, j]}: {matriz_C[i, j]}")
+                            print(f"Resultado parcial: {matriz_C[i, j]}\n")
+                        
+                        print("La matriz resultante es:")
+                        print(matriz_C)
+                        
+            #Algoritmo de sustracción de matrices
             elif selection == 2:
-                #Algoritmo de sustracción de matrices
-                if filas_A != filas_B or columnas_A != columnas_B:
+                print("Has elegido la opción: Sustracción")
+                if matriz_A.shape != matriz_B.shape:
                     print("Las dimensiones de las matrices no son iguales, por lo cual no se puede realizar la operación.")
-                #Sumar los elementos de A y B y almacenar en resultado
+                #Restar los elementos de A y B e imprimir los pasos, almacenar el resultado
                 else:
-                    resultado = [[0 for j in range(columnas_A)] for i in range(filas_A)]
-                    for i in range(filas_A):  
-                        for j in range(columnas_A):  
-                            resultado[i][j] = matriz_A[i][j] - matriz_B[i][j]
-                            #Imprimimos los pasos intermedios
-                            print(f"Sumamos {matriz_A[i][j]} menos {matriz_B[i][j]}: {resultado[i][j]}")
-                            print(f"Resultado parcial: {resultado[i][j]}\n")
-                #Imprimir resultado
-                    print("La matriz resultado de la sustracción es:")
-                    for fila in resultado:
-                        print(fila)
+                    matriz_C = matriz_A - matriz_B
+                    for i in range(matriz_A.shape[0]):
+                        for j in range(matriz_A.shape[1]):
+                            print(f"Restamos {matriz_A[i, j]} menos {matriz_B[i, j]}: {matriz_C[i, j]}")
+                            print(f"Resultado parcial: {matriz_C[i, j]}\n")
+
+                        print("La matriz resultante es:")
+                        print(matriz_C)
+            #Algoritmo de multiplicación de matrices
             elif selection == 3:
-                #Algoritmo de multiplicación de matrices
-                matriz_c = [[0 for _ in range(columnas_B)] for _ in range(filas_A)]
+                print("Has elegido la opción: Multiplicación")
                 if filas_A != columnas_B or columnas_A != filas_B:
                     print("Las matrices no son conformables, por lo cual no se puede realizar la operación.")
                 else:
-                    resultado = [[0 for j in range(columnas_A)] for i in range(filas_A)]
-                    for i in range(filas_A):  
-                        for j in range(columnas_B):
-                            for k in range(columnas_A):
-                                matriz_c[i][j] = matriz_A[i][k] * matriz_B[k][j]
-                                #Imprimimos los pasos intermedios
-                                print(f"Multiplicamos {matriz_A[i][k]} por {matriz_B[k][j]}: {matriz_c[i][j]}")
-                                print(f"Resultado parcial: {matriz_c[i][j]}\n")
-                #Imprimir resultado
-                    print("La matriz resultado de la multiplicación es:")
-                for fila in matriz_c:
-                    print(fila)
-            elif selection == 4:
+                    matriz_C = np.dot(matriz_A, matriz_B)
+                    for i in range(matriz_A.shape[0]):
+                        for j in range(matriz_A.shape[1]):
+                            print(f"Multiplicamos la fila {i+1} de la matriz A con la columna {j+1} de la matriz B: {matriz_A[i, :]} * {matriz_B[:, j]}")
+                            print(f"Resultado parcial para la posición {i+1},{j+1}: {matriz_C[i, j]}")
+                            print()
+                            
+                        #Imprimir la matriz resultante
+                        print("La matriz resultante es:")
+                        print(matriz_C)
+
             #Algoritmo de matriz inversa
-                print("Matriz inversa")
+            elif selection == 4:
+                print("Has elegido la opción: Matriz inversa")
+
+                try:
+                    columnas = int(input("Introduce el número de columnas de tu matriz: "))
+                    if columnas <= 0:
+                        print("El número de columnas debe ser un número entero positivo. Inténtalo de nuevo.\n")
+                    else:
+                        filas = int(input("Introduce el número de filas de tu matriz: "))
+                        if filas <= 0:
+                            print("El número de filas debe ser un número entero positivo. Inténtalo de nuevo.\n")
+                        else:
+                            # Verificar que la matriz sea cuadrada
+                            if filas != columnas:
+                                print("La matriz debe ser cuadrada Inténtalo de nuevo.\n")
+                            else:
+                                # Crear la matriz e inicializar en 0
+                                matriz = np.zeros((filas, columnas), dtype=complex)
+
+                                # Solicitar los elementos de la matriz
+                                print("Ingresa los elementos de la matriz: \n")
+                                for i in range(filas):
+                                    for j in range(columnas):
+                                        while True:
+                                            try:
+                                                elemento = input(f"Elemento {i+1},{j+1}: ")
+                                                matriz[i, j] = complex(elemento)
+                                                break 
+                                            except ValueError:
+                                                print("Por favor, ingresa un número válido.")
+
+                                # Imprimir la matriz 
+                                print("\nLa matriz ingresada es:")
+                                print(matriz)
+
+                                # Determinar si se puede realizar la matriz inversa
+                                if np.linalg.det(matriz) == 0:
+                                    print("La matriz no tiene inversa.")
+                                else:
+                                    # Crear matriz identidad con las mismas dimensiones de la matriz
+                                    matriz_identidad = np.eye(filas, dtype=complex)
+
+                                    # Copiar la matriz original y la identidad
+                                    A = matriz.copy()
+                                    I = matriz_identidad.copy()
+
+                                    # Mostrar matrices iniciales
+                                    print("\nIniciamos con la matriz y la matriz identidad:")
+                                    print("Matriz:")
+                                    print(A)
+                                    
+                                    print("Matriz identidad:")
+                                    print(I)
+
+                                    #  Solución de la matriz inversa
+                                    for i in range(filas):
+                                        # Igualar a 1 el primer término
+                                        if A[i, i] != 1:
+                                            factor = A[i, i]
+                                            A[i, :] = A[i, :] / factor
+                                            I[i, :] = I[i, :] / factor
+                                            print(f"\nDividimos la fila {i+1} por el valor Matriz[{i},{i}] = {factor}:")
+                                            print("Matriz después de la división:")
+                                            print(A)
+                                            print("Matriz identidad después de la división:")
+                                            print(I)
+
+                                        # Igualar a 0 los demás elementos de la columna i
+                                        for j in range(filas):
+                                            if j != i:
+                                                factor = A[j, i]
+                                                A[j, :] = A[j, :] - factor * A[i, :]
+                                                I[j, :] = I[j, :] - factor * I[i, :]
+                                                print(f"\nRestamos {factor} veces la fila {i+1} de la fila {j+1}:")
+                                                print(f"Factor de eliminación: {factor}")
+                                                print("Matriz después de la resta:")
+                                                print(A)
+                                                print("Matriz identidad después de la resta:")
+                                                print(I)
+
+                                    # Imprimir la matriz inversa
+                                    print("\nLa matriz inversa es:")
+                                    print(I)
+
+                except ValueError:
+                    print("Por favor, ingresa un número válido.\n")
+            
             elif selection == 5:
-               print("Menu") 
+               return 
             else:
                 print("Opción no válida. Por favor, intenta de nuevo.\n")
         except ValueError:
